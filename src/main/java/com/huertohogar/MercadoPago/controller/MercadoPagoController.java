@@ -1,6 +1,7 @@
 package com.huertohogar.MercadoPago.controller;
 
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
@@ -54,9 +55,18 @@ public class MercadoPagoController {
             items.add(itemRequest);
         }
 
+        // Configurar URLs de retorno
+        PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
+                .success("yourapp://congrats")
+                .failure("yourapp://congrats")
+                .pending("yourapp://congrats")
+                .build();
+
         // Crear la preferencia
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .items(items)
+                .backUrls(backUrls)
+                .autoReturn("approved")
                 .build();
 
         // Crear cliente y obtener preferencia
